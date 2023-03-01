@@ -1,7 +1,11 @@
 package com.inesa.hitnewalert;
 
 import com.alibaba.fastjson.JSON;
-import com.inesa.hitnewalert.vo.HitNewDataVo;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.inesa.hitnewalert.entity.HitNewDataVo;
+import com.inesa.hitnewalert.entity.Hitnew;
+import com.inesa.hitnewalert.mapper.HitNewDataVoMapper;
+import com.inesa.hitnewalert.mapper.HitnewMapper;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -9,6 +13,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
@@ -16,7 +21,11 @@ import java.util.List;
 
 @SpringBootTest
 class HitnewalertApplicationTests {
+    @Autowired
+    private HitNewDataVoMapper hitNewDataVoMapper;
 
+    @Autowired
+    private HitnewMapper hitnewMapper;
     @Test
     void contextLoads() {
     }
@@ -49,8 +58,22 @@ class HitnewalertApplicationTests {
                     System.out.println(bond_nm);
                     // progress_dt 2023-03-03
                     String progress_dt = dataBean.getProgress_dt();
-                    System.out.println(progress_dt);
-                    System.out.println();
+                    Hitnew hitnew = new Hitnew();
+                    hitnew.setName(bond_nm);
+                    hitnew.setTime(progress_dt);
+
+                    QueryWrapper<Hitnew> hitnewQueryWrapper = new QueryWrapper<>();
+                    hitnewQueryWrapper.equals(hitnew);
+
+                    Hitnew hitnew1 = hitnewMapper.selectOne(hitnewQueryWrapper);
+                    if(hitnew1.getId()==null){
+                        int insert = hitnewMapper.insert(hitnew);
+                        if(insert==1){
+                            System.out.println("数据更新成功！");
+                        }
+
+                    }
+
                 }
 
             });

@@ -1,4 +1,4 @@
-package com.inesa.hitnewalert.vo;
+package com.inesa.hitnewalert.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
