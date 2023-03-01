@@ -28,11 +28,13 @@ class HitnewalertApplicationTests {
     private HitnewMapper hitnewMapper;
     @Test
     void contextLoads() {
+        Hitnew hitnew = hitnewMapper.selectById(1);
+        System.out.println(hitnew);
     }
 
 
     @Test
-    public void query_hitnewdatas() throws IOException {
+    public void insert_hitnewdatas() throws IOException {
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         // https://www.jisilu.cn/webapi/cb/pre/?history=N
         HttpGet get = new HttpGet("https://www.jisilu.cn/webapi/cb/pre/?history=N");
@@ -63,10 +65,10 @@ class HitnewalertApplicationTests {
                     hitnew.setTime(progress_dt);
 
                     QueryWrapper<Hitnew> hitnewQueryWrapper = new QueryWrapper<>();
-                    hitnewQueryWrapper.equals(hitnew);
+                    hitnewQueryWrapper.eq("name",bond_nm);
 
                     Hitnew hitnew1 = hitnewMapper.selectOne(hitnewQueryWrapper);
-                    if(hitnew1.getId()==null){
+                    if(hitnew1==null){
                         int insert = hitnewMapper.insert(hitnew);
                         if(insert==1){
                             System.out.println("数据更新成功！");

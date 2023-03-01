@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Hitnew {
-    Integer id;
+    int id;
     String  name;
     String time;
 

@@ -1,6 +1,6 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://8.210.126.144:3306/hitnewData?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://8.210.126.144:3306/hitnewData?useUnicode=true&characterEncoding=UTF-8&useSSL=false
     username: root
     password: Aa123456
