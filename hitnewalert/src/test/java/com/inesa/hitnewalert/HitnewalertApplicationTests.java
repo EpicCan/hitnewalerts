@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
@@ -31,6 +33,31 @@ class HitnewalertApplicationTests {
         Hitnew hitnew = hitnewMapper.selectById(1);
         System.out.println(hitnew);
     }
+
+    @Test
+    public void query_hitnewdatas() throws IOException {
+        Date date=new Date();//此时date为当前的时间
+        SimpleDateFormat dateFormat=new SimpleDateFormat("YYYY-MM-dd");//设置当前时间的格式，为年-月-日
+        String sDate = dateFormat.format(date);
+        System.out.println(sDate);
+
+        QueryWrapper<Hitnew> hitnewQueryWrapper = new QueryWrapper<>();
+        hitnewQueryWrapper.eq("time",sDate);
+        List<Hitnew> hitnews = hitnewMapper.selectList(hitnewQueryWrapper);
+
+
+        if(hitnews!=null){
+            CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+            // http://www.pushplus.plus/send?token=XXXXX&title=XXX&content=XXX&template=html
+            HttpGet get = new HttpGet("http://www.pushplus.plus/send?token=dba7a3e4ed214357b669acf4dc27ce9f&title=打新提醒&content=可打新&template=html");
+            CloseableHttpResponse response = httpClient.execute(get);
+            System.out.println("可打新");
+        }else{
+            System.out.println("无打新");
+        }
+
+    }
+
 
 
     @Test
