@@ -1,10 +1,10 @@
-package com.inesa.hitnewalert;
+package com.inesa.hitnewalert.job;
+
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.inesa.hitnewalert.entity.HitNewDataVo;
 import com.inesa.hitnewalert.entity.Hitnew;
-import com.inesa.hitnewalert.mapper.HitNewDataVoMapper;
 import com.inesa.hitnewalert.mapper.HitnewMapper;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -12,63 +12,40 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
-@SpringBootTest
-class HitnewalertApplicationTests {
-    @Autowired
-    private HitNewDataVoMapper hitNewDataVoMapper;
+/**
+ * @author 小傅哥，微信：fustack
+ * @description 问题任务
+ * @github https://github.com/fuzhengwei
+ * @Copyright 公众号：bugstack虫洞栈 | 博客：https://bugstack.cn - 沉淀、分享、成长，让自己和他人都能有所收获！
+ */
+@EnableScheduling
+@Configuration
+public class InsertHitDataSchedule {
+
+    private Logger logger = LoggerFactory.getLogger(InsertHitDataSchedule.class);
+
+//    @Value("${chatbot-api.groupId}")
+//    private String groupId;
+
 
     @Autowired
     private HitnewMapper hitnewMapper;
-    @Test
-    void contextLoads() {
-        Hitnew hitnew = hitnewMapper.selectById(1);
-        System.out.println(hitnew);
-    }
-
-    @Test
-    public void query_hitnewdatas() throws IOException {
-        Date date=new Date();//此时date为当前的时间
-        SimpleDateFormat dateFormat=new SimpleDateFormat("YYYY-MM-dd");//设置当前时间的格式，为年-月-日
-        String sDate = dateFormat.format(date);
-        System.out.println(sDate);
-
-        QueryWrapper<Hitnew> hitnewQueryWrapper = new QueryWrapper<>();
-        hitnewQueryWrapper.eq("time",sDate);
-        List<Hitnew> hitnews = hitnewMapper.selectList(hitnewQueryWrapper);
-
-        String miao_code = "tDWTOm5";
-        String text = "可打新";
-        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-        // http://www.pushplus.plus/send?token=XXXXX&title=XXX&content=XXX&template=html
-        HttpGet miaotixing = new HttpGet("http://miaotixing.com/trigger?id=" + miao_code + "&text=" + text + "&type=json");
-        CloseableHttpResponse miaotixingresponse = httpClient.execute(miaotixing);
 
 
-        if(hitnews!=null){
+    // 表达式：cron.qqe2.com
+    @Scheduled(cron = "0 0 8 * * ?")
+    public void run() throws IOException {
 
-            // http://www.pushplus.plus/send?token=XXXXX&title=XXX&content=XXX&template=html
-            HttpGet get = new HttpGet("http://www.pushplus.plus/send?token=dba7a3e4ed214357b669acf4dc27ce9f&title=打新提醒&content=可打新&template=html");
-            CloseableHttpResponse response = httpClient.execute(get);
-            System.out.println("可打新");
-        }else{
-            System.out.println("无打新");
-        }
-
-    }
-
-
-
-    @Test
-    public void insert_hitnewdatas() throws IOException {
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         // https://www.jisilu.cn/webapi/cb/pre/?history=N
         HttpGet get = new HttpGet("https://www.jisilu.cn/webapi/cb/pre/?history=N");
@@ -124,6 +101,8 @@ class HitnewalertApplicationTests {
         } else {
             System.out.println(response.getStatusLine().getStatusCode());
         }
+
+
     }
 
 }

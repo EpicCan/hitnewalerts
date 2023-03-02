@@ -39,7 +39,7 @@ public class QueryHitDataSchedule {
 
 
     // 表达式：cron.qqe2.com
-    @Scheduled(cron = "0/30 * * * * ?")
+    @Scheduled(cron = "0 10 09 * * ?")
     public void run() {
         try {
             if (new Random().nextBoolean()) {
