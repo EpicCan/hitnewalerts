@@ -4,3 +4,5 @@ spring:
     url: jdbc:mysql://8.210.126.144:3306/hitnewData?useUnicode=true&characterEncoding=UTF-8&useSSL=false
     username: root
     password: Aa123456
+server:
+  port: 8091

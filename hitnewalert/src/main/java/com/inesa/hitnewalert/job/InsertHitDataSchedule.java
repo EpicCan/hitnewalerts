@@ -82,6 +82,7 @@ public class InsertHitDataSchedule {
                     if(hitnew1==null){
                         int insert = hitnewMapper.insert(hitnew);
                         if(insert==1){
+                            logger.info("数据更新成功");
                             System.out.println("数据更新成功！");
                         }
 

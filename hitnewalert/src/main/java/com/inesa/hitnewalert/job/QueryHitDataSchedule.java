@@ -42,17 +42,17 @@ public class QueryHitDataSchedule {
     @Scheduled(cron = "0 10 09 * * ?")
     public void run() {
         try {
-            if (new Random().nextBoolean()) {
-                logger.info("随机打烊中...");
-                return;
-            }
+//            if (new Random().nextBoolean()) {
+//                logger.info("随机打烊中...");
+//                return;
+//            }
 
             GregorianCalendar calendar = new GregorianCalendar();
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
-            if (hour > 22 || hour < 7) {
-                logger.info("打烊时间不工作，AI 下班了！");
-                return;
-            }
+//            if (hour > 22 || hour < 7) {
+//                logger.info("打烊时间不工作，AI 下班了！");
+//                return;
+//            }
             Date date=new Date();//此时date为当前的时间
             SimpleDateFormat dateFormat=new SimpleDateFormat("YYYY-MM-dd");//设置当前时间的格式，为年-月-日
             String sDate = dateFormat.format(date);
@@ -63,7 +63,7 @@ public class QueryHitDataSchedule {
             List<Hitnew> hitnews = hitnewMapper.selectList(hitnewQueryWrapper);
 
 
-            if(hitnews!=null){
+            if(hitnews.size()!=0){
                 CloseableHttpClient httpClient = HttpClientBuilder.create().build();
                 // http://www.pushplus.plus/send?token=XXXXX&title=XXX&content=XXX&template=html
                 HttpGet get = new HttpGet("http://www.pushplus.plus/send?token=dba7a3e4ed214357b669acf4dc27ce9f&title=打新提醒&content=可打新&template=html");
@@ -78,7 +78,7 @@ public class QueryHitDataSchedule {
 
 //         logger.info("编号：{} 问题：{} 回答：{} 状态：{}", topic.getTopic_id(), topic.getQuestion().getText(), answer, status);
         } catch (Exception e) {
-            logger.error("自动回答问题异常", e);
+            logger.error("异常", e);
         }
     }
 

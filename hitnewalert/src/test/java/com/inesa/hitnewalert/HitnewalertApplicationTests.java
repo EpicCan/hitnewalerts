@@ -53,7 +53,7 @@ class HitnewalertApplicationTests {
         CloseableHttpResponse miaotixingresponse = httpClient.execute(miaotixing);
 
 
-        if(hitnews!=null){
+        if(hitnews.size()!=0){
 
             // http://www.pushplus.plus/send?token=XXXXX&title=XXX&content=XXX&template=html
             HttpGet get = new HttpGet("http://www.pushplus.plus/send?token=dba7a3e4ed214357b669acf4dc27ce9f&title=打新提醒&content=可打新&template=html");
